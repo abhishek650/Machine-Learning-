@@ -59,29 +59,55 @@ def TitanicLogistic():
   print(titanic_data.head(5))
   
   print("Values of Sex Column")
-  print(pd.get_dummies(titanic_data["sex"]))
+  print(pd.get_dummies(titanic_data["Sex"]))
   
   print("Values of Sex Column after removing one field")
-  Sex = pd.get_dummies(titanic_data["sex"],drop_first = 1)
+  Sex = pd.get_dummies(titanic_data["Sex"],drop_first = True)
   print(Sex.head(5))
   
-  print("First five entries from dataset after removing zero column")
+  print("Values of PClass Column after removing one field")
+  PClass = pd.get_dummies(titanic_data["PClass"],drop_first = True)
+  print(PClass.head(5))
+  
+  print("Values of data set after concatenating new columns")
+  titanic_data = pd.concat([titanic_data,Sex,Pclass),axis=1)
   print(titanic_data.head(5))
   
-  print("First five entries from dataset after removing zero column")
-  print(titanic_data.head(5))
-  
-
+  print("Values of data set after removing irrelevant column")
+  titanic_data.drop(["Sex","sibsp","Parch","Embarked"], axis=1, inplace=True)
+  print(titanic_data.head(5)) 
+                            
+  x = titanic_data.drop("Survived",axis=1)
+  y = titanic_data["Survived"]
+                            
+  #Step 4: Data Training
+  xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size = 0.5)
+                            
+  logmodel = LogisticRegression()
+                            
+  logmodel.fit(xtrain,ytrain)
+                            
+  #Step 5: Data Testing
+  prediction = logmodel.predict(xtest)
+                            
+  #Step 6: Calculate Accuracy
+  print("Classification report of Logistic Regression is:")
+  print(classification_report(ytest,prediction))
+                            
+  print("Confusion matrix of Logistic Regression is:")
+  print(confusion_matrix(ytest,prediction))
+                            
+  print("Accuracy of Logistic Regression is:")
+  print(accuracy_score(ytest,prediction))                          
+ 
 def main():
+  print("-----Python:Machine Learning------")
+  
+  print("-----Survived Machine Learning------")
 
-
-
-
-
-
-
-
-
+  print("Logistic Regression on Titanic Data Set")
+                            
+  TitanicLogistic()                          
 
 if __name__ == "__main__":
   main()
